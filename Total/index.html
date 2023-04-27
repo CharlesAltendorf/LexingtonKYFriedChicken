@@ -1,415 +1,327 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Total Spots</title>
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Font Awesome icons (free version)-->
-    <script src="https://kit.fontawesome.com/19a0abbde8.js" crossorigin="anonymous"></script>
-    <script src="https://use.fontawesome.com/releases/v6.4.0/js/all.js" crossorigin="anonymous"></script>
-    <!-- Google fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
-        type="text/css" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet" />
+	<meta charset=utf-8 />
+	<title>Lab 07 — US Power Plants</title>
+	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+	<link rel='icon' href='https://newmapsplus.github.io/favicon.ico' type='image/x-icon' />
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+	<link href="https://fonts.googleapis.com/css?family=Cabin|Roboto:400,700|Roboto+Condensed:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,900i" rel="stylesheet">
+
+	<style>
+		/* 
+			UKy Colors: 
+            #c7c9c8 light gray 
+            #63666a dark gray
+            #15397f dark blue
+            #009bda light blue
+            #0033a0 official blue
+        */
+		body {
+			margin: 0;
+			padding: 0;
+			background: #f7f0e6;
+			font-family: 'Lato', sans-serif;
+			font-weight: 300;
+			color: #c80f28;
+			font-size: 100%;
+			/* 16px is default browser size */
+
+		}
+
+		header,
+		section,
+		footer {
+			width: 80%;
+			margin: 10px auto;
+		}
+
+		h1 {
+			font-weight: 900;
+			font-size: 2.8em;
+			font-family: 'Cabin', Sans-Serif;
+			font-style: italic;
+			/* The em unit. 3x the current size */
+			letter-spacing: .02em;
+			margin: 5px 0;
+			/* text-transform: uppercase; */
+		}
+
+		h2 {
+			font-weight: 300;
+			color: #c80f28;
+			font-size: 2.2em;
+			font-family: 'Cabin', Sans-Serif;
+			letter-spacing: .06em;
+			font-style: italic;
+			margin: 5px 0;
+		}
+
+		h3 {
+			font-weight: 300i;
+			font-size: 1.5em;
+			font-family: 'Cabin', Sans-Serif;
+			font-style: bold;
+			margin-bottom: 5px;
+		}
+
+		p {
+			font-size: 1.3em;
+			line-height: 1.8em;
+			margin-bottom: 5px;
+		}
+
+		a {
+			color: #004A8B;
+			font-weight: 400;
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		ul {
+			padding: 0px 20px 4px 20px;
+			font-size: 1.1em;
+			line-height: 1.2em;
+			color: #63666a;
+		}
+
+		li {
+			margin: 10px 0
+		}
+
+		hr {
+			margin: 20px 0;
+			border: 0;
+			height: 1px;
+			background: #63666a;
+
+		}
+
+		.linkbox {
+			margin: 3px 0 20px 0;
+			display: block;
+			font-size: 0.9em;
+			font-weight: 300;
+			line-height: 1.3em;
+		}
+
+		#map {
+			width: 100%;
+			height: 450px;
+			margin: 20px auto;
+
+		}
+
+		.max-image-width {
+			width: 100%;
+		}
+
+		/* Use float property to make two-column layout */
+		.first-column {
+			float: left;
+			width: 49%;
+			padding-right: 2%;
+		}
+
+		.column {
+			float: left;
+			width: 49%;
+		}
+
+		/* Clear floats after the columns */
+		.row::after {
+			content: "";
+			display: block;
+			clear: both;
+		}
+
+		/* When browser is 900px wide or less */
+		@media screen and (max-width: 900px) {
+
+			.first-column,
+			.second-column {
+				width: 100%;
+			}
+		}
+	</style>
 </head>
 
-<body id="page-top">
-    <!-- Masthead-->
-    <header class="masthead bg-primary text-white text-center">
-        <div class="container d-flex align-items-center flex-column">
-            <!-- Masthead Heading-->
-            <h1 class="masthead-heading text-uppercase mb-0">TOTAL SPOTS</h1>
-        </div>
-    </header>
-    <!-- Highlights Section-->
-    <section class="page-section portfolio" id="portfolio">
-        <div class="container">
-            <!-- Highlights Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Spots</h2>
-            <!-- Icon Divider-->
-            <div class="divider-custom">
-                <div class="divider-custom-line"></div>
-                <div class="divider-custom-icon"><i class="fa-solid fa-drumstick-bite"></i></div>
-                <div class="divider-custom-line"></div>
-            </div>
-            <!-- Portfolio Grid Items-->
-            <div class="row justify-content-center">
-                <!-- Portfolio Item 1-->
-                <div class="col-md-6 col-lg-4 mb-5">
-                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal1">
-                        <div
-                            class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                            <div class="portfolio-item-caption-content text-center text-white"><i
-                                    class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="assets/img/portfolio/ActiveCincinnati.png"
-                            alt="Active Cincinnati Map" />
-                    </div>
-                </div>
-                <!-- Portfolio Item 2-->
-                <div class="col-md-6 col-lg-4 mb-5">
-                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal2">
-                        <div
-                            class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                            <div class="portfolio-item-caption-content text-center text-white"><i
-                                    class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="assets/img/portfolio/KAMPLogo.png"
-                            alt="Kentucky Association of Mapping Professionals" />
-                    </div>
-                </div>
-                <!-- Portfolio Item 3-->
-                <div class="col-md-6 col-lg-4 mb-5">
-                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal3">
-                        <div
-                            class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                            <div class="portfolio-item-caption-content text-center text-white"><i
-                                    class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="assets/img/portfolio/2020USResidencyMap.png"
-                            alt="2020 US Residency Map" />
-                    </div>
-                </div>
-                <!-- Portfolio Item 4-->
-                <div class="col-md-6 col-lg-4 mb-5 mb-lg-0">
-                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal4">
-                        <div
-                            class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                            <div class="portfolio-item-caption-content text-center text-white"><i
-                                    class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="assets/img/portfolio/GISLounge.png" alt="GIS Lounge Article" />
-                    </div>
-                </div>
-                <!-- Portfolio Item 5-->
-                <div class="col-md-6 col-lg-4 mb-5 mb-md-0">
-                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal5">
-                        <div
-                            class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                            <div class="portfolio-item-caption-content text-center text-white"><i
-                                    class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="assets/img/portfolio/U.S. Renewable Energy Production.png"
-                            alt="U.S. Renewable Energy Production" />
-                    </div>
-                </div>
-                <!-- Portfolio Item 6-->
-                <div class="col-md-6 col-lg-4">
-                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal6">
-                        <div
-                            class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                            <div class="portfolio-item-caption-content text-center text-white"><i
-                                    class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <img class="img-fluid" src="assets/img/portfolio/WildfiresinKansas_1992_2020.png"
-                            alt="Wildfires in Kansas, 1992-2020" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Contact Section-->
-    <section class="page-section" id="contact">
-        <div class="container">
-            <div class="row">
-                <!-- Footer Social Icons-->
-                <div class="col-lg-4 mb-5 mb-lg-0">
-                    <h4 class="text-uppercase mb-4">Around the Web</h4>
-                    <a class="btn btn-outline-dark btn-social mx-1"
-                        href="https://www.linkedin.com/in/charles-altendorf/"><i
-                            class="fab fa-fw fa-linkedin-in"></i></a>
-                    <a class="btn btn-outline-dark btn-social mx-1" href="https://github.com/CharlesAltendorf"><i
-                            class="fab fa-fw fa-github"></i></a>
-                </div>
-                <!-- Footer About Text-->
-                <div class="col-lg-4 mb-5 mb-lg-0">
-                    <h4 class="text-uppercase mb-4">About Freelancer</h4>
-                    <p class="lead mb-0">
-                        This website was created using the Bootstrap, Freelancer Template. Freelancer is a free to use,
-                        MIT licensed Bootstrap theme created by
-                        <a href="http://startbootstrap.com">Start Bootstrap</a>
-                        .
-                    </p>
-                </div>
-                <!-- New Maps Plus-->
-                <div class="col-lg-4">
-                    <h4 class="text-uppercase mb-4">New Maps Plus</h4>
-                    <p class="lead mb-0">
-                        Content generated for this website is a result of the education I have recieved
-                        from the University of Kentucky's New Maps Plus Program.
-                        <a href="https://newmapsplus.as.uky.edu/">Find out more here</a>
-                        .
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Copyright Section-->
-    <div class="copyright py-4 text-center text-white">
-        <p class="lead mb-0">
-            Return to main page:
-            <a href="#">Lexington KY Fried Chicken Spots</a>
-        </p>
-        <div class="container"><small>Last Updated 4/26/2023</small></div>
-    </div>
-    <!-- Portfolio Modals-->
-    <!-- Portfolio Modal 1-->
-    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" aria-labelledby="portfolioModal1"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal"
-                        aria-label="Close"></button></div>
-                <div class="modal-body text-center pb-5">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <!-- Portfolio Modal - Title-->
-                                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">Active Cincinnati
-                                </h2>
-                                <!-- Icon Divider-->
-                                <div class="divider-custom">
-                                    <div class="divider-custom-line"></div>
-                                    <div class="divider-custom-icon"><i class="fa-solid fa-water"></i></div>
-                                    <div class="divider-custom-line"></div>
-                                </div>
-                                <!-- Portfolio Modal - Image-->
-                                <img class="img-fluid rounded mb-5" src="assets/img/portfolio/ActiveCincinnati.png"
-                                    alt="Active Cincinnati" />
-                                <!-- Portfolio Modal - Text-->
-                                <a href="https://charlesaltendorf.github.io/ActiveCincinnati">View the Map</a>
-                                <p class="mb-4">When I was nearing completion of MAP 671 course, I stumbled upon some
-                                    interesting census information. From 2010 to 2020 the city proper of Cincinnati
-                                    gained population for the first time since 1940 to 1950. In this map I looked at
-                                    growing census tracts near private health clubs, I hope to explore other factors in
-                                    the future.</p>
-                                <button class="btn btn-primary" data-bs-dismiss="modal">
-                                    <i class="fas fa-xmark fa-fw"></i>
-                                    Close Window
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Portfolio Modal 2-->
-    <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" aria-labelledby="portfolioModal2"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal"
-                        aria-label="Close"></button></div>
-                <div class="modal-body text-center pb-5">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <!-- Portfolio Modal - Title-->
-                                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">Kentucky
-                                    Association of Mapping Professionals</h2>
-                                <!-- Icon Divider-->
-                                <div class="divider-custom">
-                                    <div class="divider-custom-line"></div>
-                                    <div class="divider-custom-icon"><i class="fa-solid fa-water"></i></div>
-                                    <div class="divider-custom-line"></div>
-                                </div>
-                                <!-- Portfolio Modal - Image-->
-                                <img class="img-fluid rounded mb-5" src="assets/img/portfolio/KAMPLogo.png"
-                                    alt="Ketntucky Association of Mapping Professionals" />
-                                <!-- Portfolio Modal - Text-->
-                                <a href="https://kamp.wildapricot.org/">Check out the Website</a>
-                                <p class="mb-4">I have been serving as the interim President-Elect of the Kentucky
-                                    Association of Mapping Professionals since February 2023. I also have previously
-                                    served a term on the board and as chair of the communications committee. If you want
-                                    to find out any more information about this dynamic organization, check out the link
-                                    to the website above.</p>
-                                <button class="btn btn-primary" data-bs-dismiss="modal">
-                                    <i class="fas fa-xmark fa-fw"></i>
-                                    Close Window
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Portfolio Modal 3-->
-    <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" aria-labelledby="portfolioModal3"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal"
-                        aria-label="Close"></button></div>
-                <div class="modal-body text-center pb-5">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <!-- Portfolio Modal - Title-->
-                                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">2020 US Residency
-                                    Map</h2>
-                                <!-- Icon Divider-->
-                                <div class="divider-custom">
-                                    <div class="divider-custom-line"></div>
-                                    <div class="divider-custom-icon"><i class="fa-solid fa-water"></i></div>
-                                    <div class="divider-custom-line"></div>
-                                </div>
-                                <!-- Portfolio Modal - Image-->
-                                <img class="img-fluid rounded mb-5" src="assets/img/portfolio/2020USResidencyMap.png"
-                                    alt="2020 US Residency Map" />
-                                <!-- Portfolio Modal - Text-->
-                                <a href="https://charlesaltendorf.github.io/2020-US-Residency-Map/">View the Website</a>
-                                <p class="mb-4">2020 data was collected using the American Community Survey API. Data
-                                    was then copied to a csv file then joined into a geojson to be displayed using
-                                    leaflet. Percentages were calculated by taking raw numbers listed and dividing the
-                                    by the raw total residences in the data.</p>
-                                <button class="btn btn-primary" data-bs-dismiss="modal">
-                                    <i class="fas fa-xmark fa-fw"></i>
-                                    Close Window
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Portfolio Modal 4-->
-    <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" aria-labelledby="portfolioModal4"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal"
-                        aria-label="Close"></button></div>
-                <div class="modal-body text-center pb-5">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <!-- Portfolio Modal - Title-->
-                                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">An Exemplary System
-                                </h2>
-                                <!-- Icon Divider-->
-                                <div class="divider-custom">
-                                    <div class="divider-custom-line"></div>
-                                    <div class="divider-custom-icon"><i class="fa-solid fa-water"></i></div>
-                                    <div class="divider-custom-line"></div>
-                                </div>
-                                <!-- Portfolio Modal - Image-->
-                                <img class="img-fluid rounded mb-5" src="assets/img/portfolio/GISLounge.png"
-                                    alt="GIS Lounge Article" />
-                                <!-- Portfolio Modal - Text-->
-                                <a
-                                    href="https://www.gislounge.com/a-case-study-on-converting-a-geodatabase-from-arcgis-to-qgis/">View
-                                    the Article</a>
-                                <p class="mb-4">During my time at Hardin County Water District No. 1, my manager
-                                    requested a way to simply push out our data to several users without a cloud. This
-                                    was for security reasons. I created a simple method to convert file geodatabases and
-                                    symbols from Arcmap to QGIS. Users then simply had to plug into the server
-                                    periodically to recieve updates. This system won us the KAMP Exemplary Systems Award
-                                    in 2019 as well as got me pulished in the famous online GIS magazine, GISLounge.</p>
-                                <button class="btn btn-primary" data-bs-dismiss="modal">
-                                    <i class="fas fa-xmark fa-fw"></i>
-                                    Close Window
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Portfolio Modal 5-->
-    <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" aria-labelledby="portfolioModal5"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal"
-                        aria-label="Close"></button></div>
-                <div class="modal-body text-center pb-5">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <!-- Portfolio Modal - Title-->
-                                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">U.S. Renewable
-                                    Energy Production</h2>
-                                <!-- Icon Divider-->
-                                <div class="divider-custom">
-                                    <div class="divider-custom-line"></div>
-                                    <div class="divider-custom-icon"><i class="fa-solid fa-water"></i></div>
-                                    <div class="divider-custom-line"></div>
-                                </div>
-                                <!-- Portfolio Modal - Image-->
-                                <img class="img-fluid rounded mb-5"
-                                    src="assets/img/portfolio/U.S. Renewable Energy Production.png"
-                                    alt="U.S. Renewable Energy Production" />
-                                <!-- Portfolio Modal - Text-->
-                                <a href="https://charlesaltendorf.github.io/US_Renewable_Energy_Production/">View the
-                                    Website</a>
-                                <p class="mb-4">A popular exercise amoung students in the New Maps Plus Program. Using
-                                    the Energy Information Administration's Survey Form EIA 923, one can create a
-                                    graduated circles map of U.S. Energy production.</p>
-                                <button class="btn btn-primary" data-bs-dismiss="modal">
-                                    <i class="fas fa-xmark fa-fw"></i>
-                                    Close Window
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Portfolio Modal 6-->
-    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" aria-labelledby="portfolioModal6"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal"
-                        aria-label="Close"></button></div>
-                <div class="modal-body text-center pb-5">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <!-- Portfolio Modal - Title-->
-                                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">Wildfires in Kansas
-                                    1992-2020</h2>
-                                <!-- Icon Divider-->
-                                <div class="divider-custom">
-                                    <div class="divider-custom-line"></div>
-                                    <div class="divider-custom-icon"><i class="fa-solid fa-water"></i></div>
-                                    <div class="divider-custom-line"></div>
-                                </div>
-                                <!-- Portfolio Modal - Image-->
-                                <img class="img-fluid rounded mb-5"
-                                    src="assets/img/portfolio/WildfiresinKansas_1992_2020.png"
-                                    alt="Wildfires in Kansas, 1992-2020" />
-                                <!-- Portfolio Modal - Text-->
-                                <p class="mb-4">A hexagon heat map of Kansas Wildfires created using QGIS.</p>
-                                <button class="btn btn-primary" data-bs-dismiss="modal">
-                                    <i class="fas fa-xmark fa-fw"></i>
-                                    Close Window
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<body>
+
+	<header>
+		<h1>U.S. Renewable Energy Production</h1>
+	</header>
+	<section>
+		<div class="row">
+			<div id="map"></div>
+		</div>
+	</section>
+	<footer>
+		<p>Return to main <a href="https://charlesaltendorf.github.io/LexingtonKYFriedChicken/">map</a></p>
+	</footer>
+
 	<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-    <script src="data/power-plants.geojson"></script>
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
+	<script src="data/LexingtonFriedChickenSpotsTotal.geojson"></script>
+	<script>
+		// map options
+		var options = {
+			center: [38, -95],
+			zoom: 4
+		}
+
+		// create a Leaflet map in our division container with id of 'map'
+		var map = L.map('map', options);
+
+		// Leaflet providers base map URL
+		var basemap_source =
+			'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/dark_all/{z}/{x}/{y}.png'
+
+		// Leaflet providers attributes
+		var basemap_options = {
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+			subdomains: 'abcd',
+			maxZoom: 19
+		};
+
+		// request some basemap tiles and add to the map
+		var tiles = L.tileLayer(basemap_source, basemap_options).addTo(map);
+
+		//lab expirementation code
+		// Load power plants
+		//plants.features.sort(function(a, b) {
+  		//return b.properties.capacity_mw - a.properties.capacity_mw;
+		//});1
+		
+		//L.geoJson(plants, {
+			//pointToLayer: function (feature, latlng) {
+				//return L.circleMarker(latlng, {
+					//color: 'orange',
+					//weight: 1,
+					//fillColor: 'yellow',
+					//fillOpacity: 1,
+					//fillOpacity: .8,
+					//radius: feature.properties.capacity_mw
+					//radius: feature.properties.capacity_mw * .01
+				//});
+			//},
+			//onEachFeature : function(feature,layer) {
+			//layer.on('mouseover', function() {
+  			//layer.setStyle({
+    		//fillColor: 'red'
+  			//});
+			//});
+			//layer.on('mouseout', function() {
+  			//layer.setStyle({
+      		//fillColor: 'yellow'
+  			//});
+			//});
+			//layer.bindTooltip(layer.feature.properties.plant_name);
+			//}
+			//}).addTo(map);
+		
+		//L.geoJson(plants, {
+			//pointToLayer: function (feature, latlng) {
+				//return L.circleMarker(latlng, {
+					//fillOpacity: .8
+
+				//})
+			//},
+		//onEachFeature: function(feature, layer) {
+		//if (feature.properties.fuel_source.Coal) {
+  		//layer.setStyle({
+		//fillColor: 'red',
+		//radius: getRadius(feature.properties.fuel_source.Coal)
+  		//});
+		//} else if (feature.properties.fuel_source.Hydro) {
+  		//layer.setStyle({
+		//fillColor: 'blue',
+		//radius: getRadius(feature.properties.fuel_source.Hydro)
+  		//});
+		//}
+		//}}).addTo(map);
+		//function getRadius(area) {
+  		//var radius = Math.sqrt(area/Math.PI);
+  		//return radius * .6;
+		//}
+		//var commonStyles = {
+ 		//weight: 1,
+ 		//stroke: 1,
+ 		//fillOpacity: .8
+		//};
+
+		//var hydroLayer = L.geoJson(plants, {
+ 		//pointToLayer: function(feature,latlng) {
+   			//return L.circleMarker(latlng, commonStyles);
+ 		//},
+ 		//filter: function(feature) {
+   		//if(feature.properties.fuel_source.Hydro) {
+       		//return feature;
+  	 	//}
+ 		//},
+ 		//style: function(feature) {
+   		//return {
+     	//color: '#1f78b4',
+     	//fillColor: '#1f78b4',
+     	//radius: getRadius(feature.properties.fuel_source.Hydro)
+   		//}
+ 		//}
+		//}).addTo(map);
+
+		//var windLayer = L.geoJson(plants, {
+ 		//pointToLayer: function(feature,latlng) {
+   		//return L.circleMarker(latlng, commonStyles);
+ 		//},
+ 		//filter: function(feature) {
+   		//if(feature.properties.fuel_source.Wind) {
+     	//return feature;
+   		//}
+ 		//},
+ 		//style: function(feature) {
+   		//return {
+     	//color: '#a6cee3',
+     	//fillColor: '#a6cee3',
+     	//radius: getRadius(feature.properties.fuel_source.Wind)
+   		//}
+ 		//}
+		//}).addTo(map);
+
+		//End of Lab expirementation code, beginning of final product
+		var Layer = L.geoJson(chicken, {
+ 		pointToLayer: function(feature,latlng) {
+   			return L.circleMarker(latlng, {
+				fillOpacity: .8
+ 		});
+ 		//style: function(feature) {
+   			//return {
+     			//color: '#f7f0e6',
+     			//fillColor: '#f7f0e6',
+   			//}
+ 		//}
+		//onEachFeature : function(feature,layer) {
+			//layer.on('mouseover', function() {
+  				//layer.setStyle({
+    			//fillColor: '#c80f28'
+  			//});
+			//});
+			//layer.on('mouseout', function() {
+  				//layer.setStyle({
+      			//fillColor: '#f7f0e6'
+  			//});
+			//});
+			//layer.bindTooltip(
+				//`<h3>${layer.feature.properties.plant_name}</h3>
+            	 //<p><b>capacity mw</b>: ${feature.properties.fuel_source.Hydro}</p>`
+			//);
+		//}
+		}}).addTo(map);
+	</script>
 
 </body>
 
