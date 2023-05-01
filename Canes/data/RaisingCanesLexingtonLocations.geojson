@@ -1,0 +1,7 @@
+var chicken = 
+{"type":"FeatureCollection","features":[
+    {"type":"Feature","properties":{"Name":"Cane's 639 The School House","Type":"Raising Cane's Chicken Fingers", "Address": "544 South Upper Street", "Phone": 8594553353, "Website": "https://www.raisingcanes.com/locations/c639/"},"geometry":{"type":"Point","coordinates":[-84.504376, 38.042508]}},
+    {"type":"Feature","properties":{"Name":"Cane's 644 The Spring Chicken","Type":"Raising Cane's Chicken Fingers", "Address": "2030 Harrodsburg Road", "Phone": 8592780015, "Website": "https://www.raisingcanes.com/locations/c644/"},"geometry":{"type":"Point","coordinates":[-84.536267, 38.025303]}},
+    {"type":"Feature","properties":{"Name":"Cane's 641 Triple Crown","Type":"Raising Cane's Chicken Fingers", "Address": "2555 Nicholasville Road", "Phone": 8593135333, "Website": "https://www.raisingcanes.com/locations/c641/"},"geometry":{"type":"Point","coordinates":[-84.521248, 37.999989]}},
+    {"type":"Feature","properties":{"Name":"Cane's 640 The Burg","Type":"Raising Cane's Chicken Fingers", "Address": "2201 War Admiral Way", "Phone": 8595430154, "Website": "https://www.raisingcanes.com/locations/c640/"},"geometry":{"type":"Point","coordinates":[-84.428331, 38.039989]}},
+    ]}
